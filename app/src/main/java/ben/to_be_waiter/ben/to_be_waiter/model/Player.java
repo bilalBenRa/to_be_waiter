@@ -1,4 +1,4 @@
-package ben.to_be_waiter;
+package ben.to_be_waiter.ben.to_be_waiter.model;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -7,25 +7,14 @@ import android.graphics.Canvas;
  * Created by bilel on 19/07/2017.
  */
 
-public class Player extends Draw {
-    private int frame;
-    private double destY;
-    private double destX;
-    private double size;
-    private double y0;
-    private int frameStart;
-    double saut = -30;
-    private boolean down=false;
-    private double angle;
-    private boolean direction=false;
+public class Player  {
 
     private STATE state;
+    private double x;
+    private double y;
 
 
 
-    public double getDestY() {
-        return destY;
-    }
 
     public void up(){
       /* switch (directionJump){
@@ -38,7 +27,7 @@ public class Player extends Draw {
 
     private void upGo(){
 
-            saut += 2.1;
+          /*  saut += 2.1;
             y += saut;
             if(!direction) {
                 x -= ((angle - 90) / 45) * 2.1;
@@ -50,39 +39,29 @@ public class Player extends Draw {
                 this.down=true;
             }else{
                 this.down=false;
-            }
+            }*/
     }
 
     public void stay(double x,double y){
-        this.saut=-40;
+      /*  this.saut=-40;
         this.down=false;
         this.setY(y);
-        this.setX(x);
-    }
-
-    public void setDestY(double destY) {
-        this.destY = destY;
-    }
-
-    public double getDestX() {
-        return destX;
-    }
-
-    public void setDestX(int destX) {
-        this.destX = destX;
+        this.setX(x);*/
     }
 
 
 
-    public Player(final Context c, double x , double y, int w , int h, int ressource){
-        super(c,x,y,w,h,ressource);
-        frame=0;
+
+    public Player(double x , double y){
+        //image= new Image(c,x,y,w,h,ressource);
         state = STATE.STAY;
+        this.x=x;
+        this.y=y;
 
     }
 
     public void draw(Canvas canvas,double x,double y){
-        switch(state){
+      /*  switch(state){
             case STAY:
                 stay(x,y);
                 break;
@@ -99,20 +78,10 @@ public class Player extends Draw {
        // super.setX(this.x);
         //super.setY(this.y);
         frame++;
-        super.draw(canvas);
+        super.draw(canvas);*/
     }
 
-    public boolean isDown() {
-        return down;
-    }
 
-    public STATE getState() {
-        return state;
-    }
-
-    public void setState(STATE state) {
-        this.state = state;
-    }
 
 
 
@@ -158,45 +127,7 @@ public class Player extends Draw {
 
     }
 
-    @Override
-    public void setX(double x) {
-        super.setX(x);
-    }
 
-    @Override
-    public void setY(double y) {
-        super.setY(y);
-    }
-
-    @Override
-    public double getX() {
-        return super.getX();
-    }
-
-    @Override
-    public double getY() {
-        return super.getY();
-    }
-
-    @Override
-    public int getDrawW() {
-        return super.getDrawW();
-    }
-
-    @Override
-    public void setDrawW(int drawW) {
-        super.setDrawW(drawW);
-    }
-
-    @Override
-    public int getDrawH() {
-        return super.getDrawH();
-    }
-
-    @Override
-    public void setDrawH(int drawH) {
-        super.setDrawH(drawH);
-    }
 
 
 }

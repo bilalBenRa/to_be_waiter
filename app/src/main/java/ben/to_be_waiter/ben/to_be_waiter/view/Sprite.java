@@ -1,4 +1,4 @@
-package ben.to_be_waiter;
+package ben.to_be_waiter.ben.to_be_waiter.view;
 
 /**
  * Created by bilel on 14/07/2017.

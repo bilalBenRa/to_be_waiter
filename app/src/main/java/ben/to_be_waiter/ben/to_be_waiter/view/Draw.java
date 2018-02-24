@@ -1,4 +1,4 @@
-package ben.to_be_waiter;
+package ben.to_be_waiter.ben.to_be_waiter.view;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -10,10 +10,10 @@ import android.graphics.drawable.Drawable;
  * Created by bilel on 19/07/2017.
  */
 
-public class Draw {
-    protected BitmapDrawable img=null; // image de la balle
-    protected double x,y; // coordonnées x,y de la balle en pixel
-    protected int drawW, drawH; // largeur et hauteur de la balle en pixels
+public abstract class Draw {
+    protected BitmapDrawable img; // image
+    protected double x,y; // coordonnées x,y de
+    protected int drawW, drawH; // largeur et hauteur
     protected int wEcran,hEcran; // largeur et hauteur de l'écran en pixels
     protected int ressource;
 
@@ -31,6 +31,43 @@ public class Draw {
         img= new BitmapDrawable(c.getResources(), Bitmap.createScaledBitmap(bitmap, drawW, drawH, true));
 
     }
+
+
+    protected void  changeImg(int ressource){
+        this.ressource=ressource;
+        Drawable dr = mContext.getResources().getDrawable(this.ressource);
+        Bitmap bitmap = ((BitmapDrawable) dr).getBitmap();
+        img= new BitmapDrawable(mContext.getResources(), Bitmap.createScaledBitmap(bitmap, drawW, drawH, true));
+    }
+
+
+
+    // on dessine l'image, en x et y
+    protected void draw(Canvas canvas)
+    {
+
+        if(img==null) {return;}
+        canvas.drawBitmap(img.getBitmap(),(int) x,(int) y, null);
+    }
+
+    abstract  void draw();
+
+    public int getDrawW() {
+        return drawW;
+    }
+
+    public void setDrawW(int drawW) {
+        this.drawW = drawW;
+    }
+
+    public int getDrawH() {
+        return drawH;
+    }
+
+    public void setDrawH(int drawH) {
+        this.drawH = drawH;
+    }
+
 
     // définit la coordonnée X de la balle
     public void setX(double x) {
@@ -50,36 +87,5 @@ public class Draw {
     // retourne la coordonnée Y de la balle
     public double getY() {
         return y;
-    }
-
-    protected void  changeImg(int ressource){
-        this.ressource=ressource;
-        Drawable dr = mContext.getResources().getDrawable(this.ressource);
-        Bitmap bitmap = ((BitmapDrawable) dr).getBitmap();
-        img= new BitmapDrawable(mContext.getResources(), Bitmap.createScaledBitmap(bitmap, drawW, drawH, true));
-    }
-
-    public int getDrawW() {
-        return drawW;
-    }
-
-    public void setDrawW(int drawW) {
-        this.drawW = drawW;
-    }
-
-    public int getDrawH() {
-        return drawH;
-    }
-
-    public void setDrawH(int drawH) {
-        this.drawH = drawH;
-    }
-
-    // on dessine l'image, en x et y
-    protected void draw(Canvas canvas)
-    {
-
-        if(img==null) {return;}
-        canvas.drawBitmap(img.getBitmap(),(int) x,(int) y, null);
     }
 }

@@ -1,4 +1,4 @@
-package ben.to_be_waiter;
+package ben.to_be_waiter.ben.to_be_waiter.view;
 
 import android.app.Activity;
 import android.os.Bundle;

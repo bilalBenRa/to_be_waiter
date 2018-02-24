@@ -1,7 +1,8 @@
 /**
  * Created by bilel on 13/07/2017.
  */
-package ben.to_be_waiter;
+package ben.to_be_waiter.ben.to_be_waiter.view;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -10,6 +11,9 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
+
+import ben.to_be_waiter.ben.to_be_waiter.model.GameModel;
+import ben.to_be_waiter.ben.to_be_waiter.model.Player;
 
 
 // SurfaceView est une surface de dessin.
@@ -20,7 +24,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private GameLoopThread gameLoopThread;
 
     private int h,w;
-    private Player player;
+    private GameModel gameModel;
 
 
 

@@ -4,6 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ben.to_be_waiter.Main2Activity">
+    tools:context="ben.to_be_waiter.ben.to_be_waiter.view.Main2Activity">
 
 </android.support.constraint.ConstraintLayout>

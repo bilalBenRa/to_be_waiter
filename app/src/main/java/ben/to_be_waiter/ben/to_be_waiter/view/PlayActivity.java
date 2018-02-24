@@ -1,4 +1,4 @@
-package ben.to_be_waiter;
+package ben.to_be_waiter.ben.to_be_waiter.view;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import ben.to_be_waiter.R;
 
 public class PlayActivity extends Activity {
     private Button bouton;
