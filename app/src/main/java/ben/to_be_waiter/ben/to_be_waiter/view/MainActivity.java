@@ -1,11 +1,15 @@
 package ben.to_be_waiter.ben.to_be_waiter.view;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
+
+import ben.to_be_waiter.R;
 
 
 public class MainActivity extends Activity {
@@ -25,6 +29,7 @@ public class MainActivity extends Activity {
 
 
         setContentView(gameView);
+
 
 
     }

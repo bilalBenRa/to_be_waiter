@@ -3,11 +3,13 @@
  */
 package ben.to_be_waiter.ben.to_be_waiter.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Display;
@@ -33,10 +35,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private GameModel gameModel;
     private Draw player;
     public float hh;
-
+    private float xCor, yCor;
     public float getHh() {
         return hh;
     }
+    private boolean ok=false;
+    private float xCorMove;
+    private int xDelta;
+    private int yDelta;
 
     public void setHh(float hh) {
         this.hh = hh;
@@ -153,8 +159,55 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     // Gère les touchés sur l'écran
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        final int x = (int) event.getRawX();//35
+        final int y = (int) event.getRawY();
+        switch (event.getAction() & MotionEvent.ACTION_MASK) {
+          /*  case MotionEvent.ACTION_DOWN:
+                xCor = event.getX(); //35
+                ok=((xCor>=player.getX())&& (xCor<=player.getX()+player.getDrawW()));
+
+
+                break;
+            case MotionEvent.ACTION_MOVE:
+
+                if(ok) {
+
+                    if (event.getX() >= xCor) {//41
+                        this.xCorMove=event.getX()-xCor;
+                        player.setX(player.getX()+50);
+                        player.imgB.left
+                    }else {//39
+
+                        this.xCorMove=xCor-event.getX();
+                        player.setX(player.getX()-50);
+
+                    }
+                }
+
+
+                //view.animate().x(event.getRawX() + xCoOrdinate).y(event.getRawY() + yCoOrdinate).setDuration(0).start();
+                break;
+            default:
+                return false;*/
+            case MotionEvent.ACTION_DOWN:
+                ok = ((x >= player.getX()) && (x <= player.getX() + player.getDrawW()));
+                xDelta = x - (int) player.getX(); //35-39=-4
+                break;
+
+            case MotionEvent.ACTION_MOVE:
+                if (ok){
+                    player.setX(x - xDelta);
+                }
+
+                break;
+            default:
+                return false;
+
+        }
+
       /*  double currentX = event.getX();
         if(currentX>=player.getX()){
             player.setDirection(false);
