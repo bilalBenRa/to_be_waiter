@@ -4,14 +4,20 @@
 package ben.to_be_waiter.ben.to_be_waiter.view;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.Window;
 import android.view.WindowManager;
 
+import ben.to_be_waiter.R;
 import ben.to_be_waiter.ben.to_be_waiter.model.GameModel;
 import ben.to_be_waiter.ben.to_be_waiter.model.Player;
 
@@ -25,9 +31,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     private int h,w;
     private GameModel gameModel;
+    private Draw player;
+    public float hh;
 
+    public float getHh() {
+        return hh;
+    }
 
-
+    public void setHh(float hh) {
+        this.hh = hh;
+    }
 
     // création de la surface de dessin
     public GameView(Context context) {
@@ -35,7 +48,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         getHolder().addCallback(this);
         gameLoopThread = new GameLoopThread(this);
 
-        // création d'un objet "balle", dont on définira la largeur/hauteur
+        // création d'un objet "balle", dont on définira la largeur/hauteurF
+        // création d'un objet "balle", dont on définira la largeur/hauteurF
         // selon la largeur ou la hauteur de l'écran
 
         WindowManager w = (WindowManager) this.getContext().getSystemService(Context.WINDOW_SERVICE);
@@ -43,6 +57,41 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         w.getDefaultDisplay().getMetrics(d);
         h=d.heightPixels;
         this.w = d.widthPixels;
+
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+        int height = size.y;
+        Resources resources = context.getResources();
+        int resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
+         float nbb=0;
+         float nbbb=0;
+        if (resourceId > 0) {
+            nbb = resources.getDimensionPixelSize(resourceId);
+
+        }
+
+        int statusBarHeight = 0;
+        resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            nbbb = getResources().getDimensionPixelSize(resourceId);
+
+        }
+        int c = 0;
+        resourceId = getResources().getIdentifier("title_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            nbbb = getResources().getDimensionPixelSize(resourceId);
+
+        }
+        // Calculate ActionBar height
+        int  J = getResources().getDimensionPixelSize(R.dimen.abc_action_bar_default_height_material);
+        int a = (height/4)+((int)nbb+(int)nbbb)-(J);
+        h=h-a;
+        this.player= new Image(context,(width/2)-(width/12),h,width/6,height/4, R.mipmap.perso);
+
+
 
 
       //  player= new Player(this.getContext(),plateformList.get(0).getX(),plateformList.get(0).getY(),this.w/7,h/11,R.mipmap.p1_front);
@@ -57,6 +106,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         // on efface l'écran, en blanc
         canvas.drawColor(Color.WHITE);
         //player.onDraw(canvas);
+        this.player.draw(canvas);
 
 
 

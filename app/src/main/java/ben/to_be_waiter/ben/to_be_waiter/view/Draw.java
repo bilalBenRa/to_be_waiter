@@ -3,22 +3,31 @@ package ben.to_be_waiter.ben.to_be_waiter.view;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.widget.AbsoluteLayout;
+import android.widget.ImageView;
 
 /**
  * Created by bilel on 19/07/2017.
  */
 
 public abstract class Draw {
-    protected BitmapDrawable img; // image
+    protected Bitmap img; // image
+
+    BitmapDrawable imgB;
     protected double x,y; // coordonnées x,y de
     protected int drawW, drawH; // largeur et hauteur
     protected int wEcran,hEcran; // largeur et hauteur de l'écran en pixels
     protected int ressource;
 
     protected  final Context mContext;
+     ImageView image=null ;
 
+    Bitmap bitmap2;
     public Draw(final Context c,double x ,double y,int w , int h,int ressource)
     {
         this.x = x; this.y = y;
@@ -27,9 +36,18 @@ public abstract class Draw {
         mContext=c; // sauvegarde du contexte
         this.ressource=ressource;
         Drawable dr = c.getResources().getDrawable(this.ressource);
-        Bitmap bitmap = ((BitmapDrawable) dr).getBitmap();
-        img= new BitmapDrawable(c.getResources(), Bitmap.createScaledBitmap(bitmap, drawW, drawH, true));
+        img = ((BitmapDrawable) dr).getBitmap();
+        imgB= new BitmapDrawable(mContext.getResources(), Bitmap.createScaledBitmap(img, drawW, drawH, true));
+       /* img= new BitmapDrawable(mContext.getResources(), Bitmap.createScaledBitmap(bitmap, drawW, drawH, true));
+        float factorH = h / (float)bitmap.getHeight();
+        float factorW = w / (float)bitmap.getWidth();
+        float factorToUse = (factorH > factorW) ? factorW : factorH;
+        img = Bitmap.createScaledBitmap(bitmap,
+                (int) (bitmap.getWidth() * factorToUse),
+                (int) (bitmap.getHeight() * factorToUse),
+                false);
 
+        System.out.println("size scaled heigth "+img.getHeight());*/
     }
 
 
@@ -37,7 +55,7 @@ public abstract class Draw {
         this.ressource=ressource;
         Drawable dr = mContext.getResources().getDrawable(this.ressource);
         Bitmap bitmap = ((BitmapDrawable) dr).getBitmap();
-        img= new BitmapDrawable(mContext.getResources(), Bitmap.createScaledBitmap(bitmap, drawW, drawH, true));
+       // img= new BitmapDrawable(mContext.getResources(), Bitmap.createScaledBitmap(bitmap, drawW, drawH, true));
     }
 
 
@@ -47,8 +65,36 @@ public abstract class Draw {
     {
 
         if(img==null) {return;}
-        canvas.drawBitmap(img.getBitmap(),(int) x,(int) y, null);
+
+       canvas.drawBitmap(imgB.getBitmap(),(float) x,(float) y, null);
+
     }
+    public Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth) {
+
+        int width = bm.getWidth();
+
+        int height = bm.getHeight();
+
+        float scaleWidth = ((float) newWidth) / width;
+
+        float scaleHeight = ((float) newHeight) / height;
+
+// CREATE A MATRIX FOR THE MANIPULATION
+
+        Matrix matrix = new Matrix();
+
+// RESIZE THE BIT MAP
+
+        matrix.postScale(scaleWidth, scaleHeight);
+
+// RECREATE THE NEW BITMAP
+
+        Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, true);
+
+        return resizedBitmap;
+
+    }
+
 
     abstract  void draw();
 
