@@ -5,5 +5,9 @@ package ben.to_be_waiter.ben.to_be_waiter.model;
  */
 
 public abstract class Food {
+    private Position position;
 
+    public Food(Position position) {
+        this.position = position;
+    }
 }

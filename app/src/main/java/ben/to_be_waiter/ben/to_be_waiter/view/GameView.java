@@ -16,9 +16,11 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ben.to_be_waiter.R;
+import ben.to_be_waiter.ben.to_be_waiter.model.Food;
 import ben.to_be_waiter.ben.to_be_waiter.model.GameModel;
 
 
@@ -57,6 +59,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         width = size.x;
         height = size.y;
 
+        this.foodsDraw=new ArrayList<>();
+
         Resources resources = context.getResources();
         int resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
         float nbb=0;
@@ -80,25 +84,38 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         this.toBeWaiterModel = new GameModel((width/2)-(width/12),yPlayerDraw);
         this.loadGame();
+        this.loadGameDraw();
 
 
 
 
+    }
+
+    private void loadGameDraw(){
+        this.loadPlayerDraw();
     }
 
     private void loadGame(){
-        this.loadPlayer();
+        this.toBeWaiterModel.loadFood(50,50);
+
     }
 
-    private void loadPlayer(){
+
+
+    private void loadPlayerDraw(){
         this.playerDraw= new Image(context, toBeWaiterModel.getPlayer().getX(), toBeWaiterModel.getPlayer().getY(),width/6,heightPlayer, R.mipmap.perso3);
     }
 
     private void playerFrame(){
         playerDraw.setX(toBeWaiterModel.getPlayer().getX());
         playerDraw.setY(toBeWaiterModel.getPlayer().getY());
+    }
+
+    private void foodsFrame(){
+        for(Food food : toBeWaiterModel.getFoods()){
 
 
+        }
     }
 
     // Fonction qui "dessine" un écran de jeu
