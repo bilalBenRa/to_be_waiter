@@ -8,11 +8,6 @@ import android.content.Context;
 
 public class Image extends Draw {
 
-    private int frame;
-    private double destY;
-    private double destX;
-    private double size;
-
 
     public Image(Context c, double x, double y, int w, int h, int ressource) {
         super(c, x, y, w, h, ressource);
@@ -23,5 +18,23 @@ public class Image extends Draw {
 
     }
 
+    @Override
+    public void setX(double x) {
+        super.setX(x);
+    }
 
+    @Override
+    public void setY(double y) {
+        super.setY(y);
+    }
+
+    @Override
+    public double getX() {
+        return super.getX();
+    }
+
+    @Override
+    public double getY() {
+        return super.getY();
+    }
 }

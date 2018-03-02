@@ -10,4 +10,10 @@ public class GameModel {
     public GameModel(double x,double y) {
         this.player = new Player(x,y);
     }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+
 }

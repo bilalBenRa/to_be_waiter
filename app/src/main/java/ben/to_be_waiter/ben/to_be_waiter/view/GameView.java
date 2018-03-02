@@ -9,19 +9,17 @@ import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
-import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
-import android.util.TypedValue;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.Window;
 import android.view.WindowManager;
+
+import java.util.List;
 
 import ben.to_be_waiter.R;
 import ben.to_be_waiter.ben.to_be_waiter.model.GameModel;
-import ben.to_be_waiter.ben.to_be_waiter.model.Player;
 
 
 // SurfaceView est une surface de dessin.
@@ -31,18 +29,22 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     // déclaration de l'objet définissant la boucle principale de déplacement et de rendu
     private GameLoopThread gameLoopThread;
 
-    private GameModel gameModel;
+    private GameModel toBeWaiterModel;
     private Draw playerDraw;
+    private List<Draw> foodsDraw;
     private boolean ok=false;
     private int height;
     private int width;
     private int xDelta;
     private  int yPlayerDraw;
+    private Context context;
+    private int heightPlayer;
 
 
     // création de la surface de dessin
     public GameView(Context context) {
         super(context);
+        this.context=context;
         getHolder().addCallback(this);
         gameLoopThread = new GameLoopThread(this);
         WindowManager w = (WindowManager) this.getContext().getSystemService(Context.WINDOW_SERVICE);
@@ -71,11 +73,32 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
         // Calculate ActionBar height
         int  J = getResources().getDimensionPixelSize(R.dimen.abc_action_bar_default_height_material);
-        int a = (height/4)+((int)nbb+(int)nbbb)-(J);
+        heightPlayer=height/2;
+        int a = (heightPlayer)+((int)nbb+(int)nbbb)-(J);
 
         yPlayerDraw=height-a;
 
-        this.playerDraw= new Image(context,(width/2)-(width/12),yPlayerDraw,width/6,height/4, R.mipmap.perso);
+        this.toBeWaiterModel = new GameModel((width/2)-(width/12),yPlayerDraw);
+        this.loadGame();
+
+
+
+
+    }
+
+    private void loadGame(){
+        this.loadPlayer();
+    }
+
+    private void loadPlayer(){
+        this.playerDraw= new Image(context, toBeWaiterModel.getPlayer().getX(), toBeWaiterModel.getPlayer().getY(),width/6,heightPlayer, R.mipmap.perso3);
+    }
+
+    private void playerFrame(){
+        playerDraw.setX(toBeWaiterModel.getPlayer().getX());
+        playerDraw.setY(toBeWaiterModel.getPlayer().getY());
+
+
     }
 
     // Fonction qui "dessine" un écran de jeu
@@ -83,6 +106,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         if(canvas==null) {return;}
         // on efface l'écran, en blanc
         canvas.drawColor(Color.WHITE);
+        this.playerFrame();
         this.playerDraw.draw(canvas);
       //  player.draw(canvas,plateformStay.getX(),plateformStay.getY() - player.getDrawH());
     }
@@ -131,13 +155,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
 
             case MotionEvent.ACTION_DOWN:
-                ok = ((x >= playerDraw.getX()) && (x <= playerDraw.getX() + playerDraw.getDrawW()) && (y <= height ) && (y >= height - playerDraw.getDrawH()));
+                ok = ((x >= playerDraw.getX()) && (x <= playerDraw.getX() + playerDraw.getDrawWidth()) && (y <= height ) && (y >= height - playerDraw.getDrawHeight()));
                 xDelta = x - (int) playerDraw.getX(); //35-39=-4
                 break;
 
             case MotionEvent.ACTION_MOVE:
                 if (ok){
-                    playerDraw.setX(x - xDelta);
+                    toBeWaiterModel.getPlayer().setX(x - xDelta);
                 }
                 break;
             default:
