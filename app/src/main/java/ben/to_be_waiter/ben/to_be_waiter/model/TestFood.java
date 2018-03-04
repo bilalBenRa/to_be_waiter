@@ -6,8 +6,23 @@ package ben.to_be_waiter.ben.to_be_waiter.model;
 
 public class TestFood extends Food {
 
-    public TestFood(Position position) {
-        super(position);
+    private double acceleration;
+
+    public TestFood(double x, double y, double xBeta, double yBeta) {
+        super(x, y, xBeta, yBeta);
+        this.acceleration=1;
+    }
+
+    public TestFood(double x, double y) {
+        super(x, y);
+        this.acceleration=1;
+    }
+
+
+    @Override
+    public void move() {
+        this.acceleration=acceleration+0.5;
+        this.setY(this.getY()+this.acceleration);
     }
 
 

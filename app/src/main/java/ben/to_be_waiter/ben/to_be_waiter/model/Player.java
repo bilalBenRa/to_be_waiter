@@ -7,29 +7,22 @@ import android.graphics.Canvas;
  * Created by bilel on 19/07/2017.
  */
 
-public class Player  {
-
-    private Position position;
+public class Player extends ElementGame  {
 
 
-    public Player(double x , double y){
-        this.position= new Position(x,y);
+    public Player(double x, double y) {
+        super(x, y);
     }
 
-    public double getX(){
-        return this.position.getX();
+    public Player(double x, double y,double xBeta,double yBeta) {
+        super(x, y,xBeta,yBeta);
     }
 
-    public double getY(){
-        return this.position.getY();
+    @Override
+    public void move() {
+
     }
 
-    public void setX(double x){
-        this.position.setX(x);
-    }
 
-    public void setY(double y){
-        this.position.setX(y);
-    }
 }
 

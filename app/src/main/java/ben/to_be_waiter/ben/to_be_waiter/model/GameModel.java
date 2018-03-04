@@ -8,31 +8,68 @@ import java.util.List;
  */
 
 public class GameModel {
-    private Player player;
-    private List<Food> foods;
+    private ElementGame player;
+    private ElementGame plateau;
+    private List<ElementGame> foods;
 
-    public GameModel(double x,double y) {
-        this.player = new Player(x,y);
+
+
+    public GameModel() {
         this.foods=new ArrayList<>();
+    }
 
+    public void loadPlayer(double x,double y){
+        this.player = new Player(x,y);
+    }
+    public void loadPlateau(double x,double y,double xBeta,double yBeta){
+        this.plateau= new Plateau(x,y,xBeta,yBeta);
     }
 
     public void loadFood(double x, double y){
-        this.foods.add(new TestFood(new Position(x,y)));
-
+        this.foods.add(new TestFood(x,y));
     }
 
-    public List<Food> getFoods() {
+    public List<ElementGame> getFoods() {
         return foods;
     }
 
-    public void setFoods(List<Food> foods) {
+    public void setFoods(List<ElementGame> foods) {
         this.foods = foods;
     }
 
-    public Player getPlayer() {
+    public void setPlayer(ElementGame player) {
+        this.player = player;
+    }
+
+    public ElementGame getPlateau() {
+        return plateau;
+    }
+
+    public void setPlateau(ElementGame plateau) {
+        this.plateau = plateau;
+    }
+
+    public ElementGame getPlayer() {
         return player;
     }
+
+    public boolean collisionPlateauToFoods(int i){
+        double xFood=foods.get(i).getX();
+        double yFood=foods.get(i).getY();
+        System.out.println("xfood"+xFood);
+        System.out.println("xBeta"+plateau.getXBeta());
+        System.out.println("xPlateau"+plateau.getX());
+
+       if(xFood>=plateau.getX() && xFood<=plateau.getXBeta() ){
+           return  true;
+       }else {
+           return false;
+       }
+    }
+
+
+
+
 
 
 }

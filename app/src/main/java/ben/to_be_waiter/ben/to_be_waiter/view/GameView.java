@@ -22,6 +22,8 @@ import java.util.List;
 import ben.to_be_waiter.R;
 import ben.to_be_waiter.ben.to_be_waiter.model.Food;
 import ben.to_be_waiter.ben.to_be_waiter.model.GameModel;
+import ben.to_be_waiter.ben.to_be_waiter.model.STATE;
+import ben.to_be_waiter.ben.to_be_waiter.model.TestFood;
 
 
 // SurfaceView est une surface de dessin.
@@ -33,15 +35,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     private GameModel toBeWaiterModel;
     private Draw playerDraw;
+    private Draw plateauDraw;
     private List<Draw> foodsDraw;
     private boolean ok=false;
     private int height;
     private int width;
     private int xDelta;
-    private  int yPlayerDraw;
     private Context context;
-    private int heightPlayer;
-
 
     // création de la surface de dessin
     public GameView(Context context) {
@@ -58,9 +58,21 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         display.getSize(size);
         width = size.x;
         height = size.y;
-
         this.foodsDraw=new ArrayList<>();
+        this.toBeWaiterModel = new GameModel();
+        this.loadGame();
+    }
 
+
+    private void loadGame(){
+        this.loadPlayer();
+        this.loadPlateau();
+        this.loadFoods();
+    }
+
+
+
+    private void loadPlayer(){
         Resources resources = context.getResources();
         int resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
         float nbb=0;
@@ -77,45 +89,72 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
         // Calculate ActionBar height
         int  J = getResources().getDimensionPixelSize(R.dimen.abc_action_bar_default_height_material);
-        heightPlayer=height/2;
+        int heightPlayer=height/2;
         int a = (heightPlayer)+((int)nbb+(int)nbbb)-(J);
 
-        yPlayerDraw=height-a;
-
-        this.toBeWaiterModel = new GameModel((width/2)-(width/12),yPlayerDraw);
-        this.loadGame();
-        this.loadGameDraw();
-
-
-
-
-    }
-
-    private void loadGameDraw(){
-        this.loadPlayerDraw();
-    }
-
-    private void loadGame(){
-        this.toBeWaiterModel.loadFood(50,50);
-
+        int  yPlayerDraw=height-a;
+        this.toBeWaiterModel.loadPlayer((width/2)-(width/12),yPlayerDraw);
+        this.playerDraw= new Image(context, toBeWaiterModel.getPlayer().getX(), toBeWaiterModel.getPlayer().getY(),width/6,heightPlayer, R.mipmap.perso4);
     }
 
 
-
-    private void loadPlayerDraw(){
-        this.playerDraw= new Image(context, toBeWaiterModel.getPlayer().getX(), toBeWaiterModel.getPlayer().getY(),width/6,heightPlayer, R.mipmap.perso3);
+    private void loadPlateau() {
+        int heigthPlateau = 50;
+        int widthPlateau = (int) playerDraw.getDrawWidth();
+        this.toBeWaiterModel.loadPlateau(toBeWaiterModel.getPlayer().getX(),toBeWaiterModel.getPlayer().getY()+10-heigthPlateau,toBeWaiterModel.getPlayer().getX()+widthPlateau,toBeWaiterModel.getPlayer().getY()+10);
+        this.plateauDraw= new Image(this.context,toBeWaiterModel.getPlateau().getX(),toBeWaiterModel.getPlateau().getY(),widthPlateau,heigthPlateau,R.mipmap.plateau);
     }
 
-    private void playerFrame(){
+    private void loadFoods() {
+        int heigthFood = 60;
+        int widthFood = 80;
+        this.toBeWaiterModel.loadFood(toBeWaiterModel.getPlayer().getX()+165,-150);
+        this.foodsDraw.add(new Image(this.context,toBeWaiterModel.getFoods().get(0).getX(),toBeWaiterModel.getFoods().get(0).getY(),widthFood,heigthFood,R.mipmap.food1));
+        toBeWaiterModel.getFoods().get(0).setState(STATE.MOVE);
+
+    }
+
+
+
+    private void gameFrame(Canvas canvas){
+        this.playerFrame(canvas);
+        this.plateauFrame(canvas);
+        this.foodsFrame(canvas);
+    }
+
+    private void playerFrame(Canvas canvas){
         playerDraw.setX(toBeWaiterModel.getPlayer().getX());
         playerDraw.setY(toBeWaiterModel.getPlayer().getY());
+        this.playerDraw.draw(canvas);
     }
 
-    private void foodsFrame(){
-        for(Food food : toBeWaiterModel.getFoods()){
+    private void plateauFrame(Canvas canvas) {
 
+        plateauDraw.setX(toBeWaiterModel.getPlateau().getX());
+        plateauDraw.setY(toBeWaiterModel.getPlateau().getY());
+        this.plateauDraw.draw(canvas);
+
+    }
+
+
+
+    private void foodsFrame(Canvas canvas){
+        for(int i =0;i <toBeWaiterModel.getFoods().size();i++){
+            if(toBeWaiterModel.collisionPlateauToFoods(i)){
+                toBeWaiterModel.getFoods().get(i).setState(STATE.STAY);
+            }else {
+                toBeWaiterModel.getFoods().get(i).setState(STATE.MOVE);
+            }
+            if(toBeWaiterModel.getFoods().get(i).getState()==STATE.MOVE){
+                toBeWaiterModel.getFoods().get(i).move();
+            }
+
+            this.foodsDraw.get(i).setX(toBeWaiterModel.getFoods().get(i).getX());
+            this.foodsDraw.get(i).setY(toBeWaiterModel.getFoods().get(i).getY());
+            this.foodsDraw.get(i).draw(canvas);
 
         }
+
     }
 
     // Fonction qui "dessine" un écran de jeu
@@ -123,9 +162,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         if(canvas==null) {return;}
         // on efface l'écran, en blanc
         canvas.drawColor(Color.WHITE);
-        this.playerFrame();
-        this.playerDraw.draw(canvas);
-      //  player.draw(canvas,plateformStay.getX(),plateformStay.getY() - player.getDrawH());
+        this.gameFrame(canvas);
     }
 
     // Fonction appelée par la boucle principale (gameLoopThread)
@@ -178,7 +215,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
             case MotionEvent.ACTION_MOVE:
                 if (ok){
+                    double val = toBeWaiterModel.getPlateau().getXBeta()-toBeWaiterModel.getPlateau().getX();
                     toBeWaiterModel.getPlayer().setX(x - xDelta);
+                    toBeWaiterModel.getPlateau().setX(x - xDelta);
+                    toBeWaiterModel.getPlateau().setXBeta(toBeWaiterModel.getPlateau().getX()+val);
+
                 }
                 break;
             default:

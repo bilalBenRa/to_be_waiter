@@ -5,5 +5,5 @@ package ben.to_be_waiter.ben.to_be_waiter.model;
  */
 
 public enum STATE {
-    STAY,UP,DOWN;
+    STAY,MOVE;
 }
